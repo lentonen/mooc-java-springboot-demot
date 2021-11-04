@@ -34,14 +34,14 @@ public class FileController {
     
     
     @GetMapping("/files/{id}")
-    public ResponseEntity<byte[]> download(Model model, @PathVariable Long id) {
-        
+    public ResponseEntity<byte[]> download(@PathVariable Long id) {
+        /** Näitä ei tarvita erikseen. file viedään jo ohjelmaan /files vaiheessa.
         FileObject fo = this.fileRepository.getOne(id);
         model.addAttribute("file.id", fo.getId());
         model.addAttribute("file.name", fo.getName());
         model.addAttribute("file.contentLength", fo.getContentLength());
         model.addAttribute("file.contentType", fo.getContentType());
-        
+        **/
         FileObject fo2 = fileRepository.getOne(id);
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(fo2.getContentType()));
@@ -49,7 +49,7 @@ public class FileController {
         
         headers.add("Content-Disposition", "attachment; filename=" + fo2.getName());
         
-        return new ResponseEntity<>(fo.getContent(), headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(fo2.getContent(), headers, HttpStatus.CREATED);
     }
     
     @PostMapping("/files")

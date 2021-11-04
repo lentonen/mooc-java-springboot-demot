@@ -18,7 +18,14 @@ public class AirportService {
         Airport a = new Airport();
         a.setIdentifier(identifier);
         a.setName(name);
-
-        airportRepository.save(a);
+        int count = 0;
+        
+        List<Airport> airports = airportRepository.findAll();
+        for (Airport airport : airports)
+            if (airport.getIdentifier().equals(identifier) && airport.getName().equals(name))
+                count++;
+        if (count == 0)
+            airportRepository.save(a);
     }
+
 }
