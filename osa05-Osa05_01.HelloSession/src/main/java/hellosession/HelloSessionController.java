@@ -10,7 +10,17 @@ public class HelloSessionController {
     
     @RequestMapping("*")
     @ResponseBody
-    public String sayHello() {
-        return "Hello there!";
+    public String sayHello(HttpSession session) {
+        int visits = 0;
+        if (session.getAttribute("count") != null) {
+            visits = (int) session.getAttribute("count");
+        }
+        visits++;
+        session.setAttribute("count", visits);
+        
+        if (visits == 1)
+            return "Hello there!";
+        return "Hello again!";
+               
     }
 }

@@ -1,6 +1,8 @@
 package onlyfortheselected;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +22,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (account == null) {
             throw new UsernameNotFoundException("No such user: " + username);
         }
+        
+        // Haetaan oikeudet listaan
+        List<SimpleGrantedAuthority> oikeudet = new ArrayList<SimpleGrantedAuthority>();
+        for (String auth : account.getAuthorities()) {
+            oikeudet.add(new SimpleGrantedAuthority(auth));
+        }
 
         return new org.springframework.security.core.userdetails.User(
         account.getUsername(),
@@ -28,6 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         true,
         true,
         true,
-        Arrays.asList(new SimpleGrantedAuthority("USER")));
+        oikeudet // Tähän tuodaan lista käyttäjän oikeuksista
+        );  
     }
 }

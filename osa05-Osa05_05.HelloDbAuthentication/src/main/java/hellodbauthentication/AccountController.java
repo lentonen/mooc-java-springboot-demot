@@ -24,7 +24,7 @@ public class AccountController {
     }
 
     @PostMapping("/accounts")
-    public String add(@RequestParam String username, @RequestParam String password) {
+    public String add(@RequestParam String username,  @RequestParam String password) {
         if (accountRepository.findByUsername(username) != null) {
             return "redirect:/accounts";
         }
@@ -33,5 +33,4 @@ public class AccountController {
         accountRepository.save(a);
         return "redirect:/accounts";
     }
-
 }
